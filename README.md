@@ -1,9 +1,3 @@
-# Mass Spectrometry Area Under Curve (AUC) Analysis
-
-
-
-
-
 ---
 title: Mass Spec AUC Analysis
 emoji: 🧪
@@ -13,6 +7,7 @@ sdk: gradio
 app_file: main.py
 pinned: false
 ---
+# Mass Spectrometry Area Under Curve (AUC) Analysis
 
 A web-based application for analyzing exported mass spectrometry spectra and calculating area under the curve (AUC) for selected m/z ranges.
 
