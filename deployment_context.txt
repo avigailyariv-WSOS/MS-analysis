@@ -1,0 +1,24 @@
+# Project Context: Mass Spectrometry AUC Gradio Deployment
+
+## Overview
+The goal was to take a local Python-based mass spectrometry Area Under the Curve (AUC) analysis application and
+ deploy it to a public cloud for use by the Merbl lab at the Weizmann Institute. 
+ We selected Hugging Face Spaces (Option 2) for permanent, free hosting using a GitHub Actions CI/CD pipeline.
+
+## Core Files
+* `main.py`: The Gradio web interface[cite: 1].
+* `auc.py`: Core logic for file reading, trapezoidal AUC integration, plotting, and summary table generation.
+* `README.md`: Project documentation[cite: 2].
+* `requirements.txt`: Added to specify dependencies (`pandas`, `numpy`, `scipy`, `matplotlib`, `gradio`).
+
+## Steps Completed
+1. Code Modification: Updated the Gradio launch block in `main.py` to use `server_name="0.0.0.0"` so Hugging Face could route internet traffic to the app[cite: 1].
+2. CI/CD Setup: Created a GitHub Action workflow (`.github/workflows/sync_to_hf.yml`) to automatically push code from the GitHub `main` branch to the Hugging Face Space using a "Write" Access Token stored as a GitHub Secret (`HF_TOKEN`).
+
+## Troubleshooting & Fixes Applied
+1. Unrelated Histories Error: The initial GitHub Action push failed because the Hugging Face Space initialized with its own commit. Fixed by adding the `--force` flag to the `git push` command in the `.yml` workflow.
+2. Binary File Rejection (LFS Issue): The push was rejected because Git history contained a large mass spectrometry file (`20260520_SOD1_mut_H43R_nodil_Alex_6kres_HCD1_IS0_sample2_b.RAW`). Fixed by checking out a completely clean orphan branch, adding `*.RAW` to `.gitignore`, and force-pushing a fresh history to GitHub to wipe the binary file from the commit tree.
+3. Hugging Face Configuration Error: The repository's custom `README.md`[cite: 2] overwrote Hugging Face's default configuration, causing the space to not know how to run the app. Fixed by appending a YAML frontmatter block to the absolute top of the `README.md`[cite: 2] specifying `sdk: gradio` and `app_file: main.py`.
+
+## Current Status
+The repository is completely clean of large `.RAW` files, the GitHub Action is successfully syncing the repo to Hugging Face, and the Hugging Face Space is configured to boot `main.py`[cite: 1]. The Gradio interface should now be live and accepting user uploads for `.txt` and `.csv` spectra.

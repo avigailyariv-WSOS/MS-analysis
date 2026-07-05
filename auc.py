@@ -183,8 +183,11 @@ def create_multi_file_summary(file_results):
 
     for file_result in file_results:
         row = {"File": file_result["file_name"]}
-        for _, result_row in file_result["results_df"].iterrows():
-            row[result_row["name"]] = result_row["area"]
+        # Use enumerate to get a 1-based index for each range
+        for i, (_, result_row) in enumerate(file_result["results_df"].iterrows()):
+            # Format the column name to include the range number
+            col_name = f"Range {i + 1}: {result_row['name']}"
+            row[col_name] = result_row["area"]
 
         rows.append(row)
 

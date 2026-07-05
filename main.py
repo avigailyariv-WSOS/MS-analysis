@@ -393,7 +393,7 @@ with gr.Blocks(title="Mass Spectrometry AUC Analysis") as app:
     with gr.Row():
         validation_status = gr.Textbox(
             label="Validation Status",
-            interactive=False,
+            interactive=True,
             lines=3
         )
     
