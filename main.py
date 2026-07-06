@@ -260,7 +260,7 @@ def analyze_spectrum(uploaded_files, selected_file_name, zoom_start, zoom_end, r
         return None, None, f"❌ Error processing file: {str(e)}", update_spectrum_choices(uploaded_files)
 
 def download_results(uploaded_files, range_count, *args):
-    """Generate excel file with results for download."""
+    """Generate CSV file with results for download."""
     try:
         files = normalize_uploaded_files(uploaded_files)
         if not files:
@@ -283,10 +283,10 @@ def download_results(uploaded_files, range_count, *args):
             })
 
         results_export_df = create_multi_file_summary(file_results)
-        excel_path = "results_multiple_files.xlsx" if len(files) > 1 else f"results_{os.path.splitext(file_results[0]['file_name'])[0]}.xlsx"
-        results_export_df.to_excel(excel_path, index=False)
+        csv_path = "results_multiple_files.csv" if len(files) > 1 else f"results_{os.path.splitext(file_results[0]['file_name'])[0]}.csv"
+        results_export_df.to_csv(csv_path, index=False)
         
-        return excel_path
+        return csv_path
     
     except Exception as e:
         print(f"❌ Error generating results: {str(e)}")
